@@ -1,0 +1,28 @@
+#title {
+    color: white;
+    text-align: center;
+}
+
+.list-group {
+    width: 300px;
+}
+
+.search {
+    float: left;
+    width: 400px;
+    margin: 10px;
+    height: 800px;
+    background: #faf6f0;
+}
+
+.overview {
+    float: right;
+    margin: 10px;
+    height: 450px;
+}
+
+.forecast {
+    margin: 30px;
+    height: 450px;
+    float: right;
+}
