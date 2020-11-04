@@ -12,23 +12,20 @@ let overviewBody = document.createElement("div");
 overviewBody.setAttribute("class", "card-body");
 overview.append(overviewBody);
 let cityName = document.createElement("h2");
-cityName.setAttribute("id", "cityInfo")
-cityName.innerHTML = `<span id="date"></span> <span id="icon"></span>`
+cityName.innerHTML = `<span id="city"></span> <span id="date"></span> <img id="icon"></img>`;
 overviewBody.append(cityName);
-let targetTemp = document.createElement("h5")
-targetTemp.innerHTML = `Temperature: <span id="temp"></span>`
+let targetTemp = document.createElement("h5");
+targetTemp.innerHTML = `Temperature: <span id="temp"></span>° F`;
 overviewBody.append(targetTemp);
-let targetHumid = document.createElement("h5")
-targetHumid.innerHTML = `Humidity: <span id="humid"></span>`
+let targetHumid = document.createElement("h5");
+targetHumid.innerHTML = `Humidity: <span id="humid"></span>%`;
 overviewBody.append(targetHumid);
-let targetSpeed = document.createElement("h5")
-targetSpeed.innerHTML = `Wind Speed: <span id="speed"></span>`
+let targetSpeed = document.createElement("h5");
+targetSpeed.innerHTML = `Wind Speed: <span id="speed"></span> miles/hour`;
 overviewBody.append(targetSpeed);
-let targetUv = document.createElement("h5")
-targetUv.innerHTML = `UV Index: <span class="badge badge-danger" id="uvIndex">Num</span>`
+let targetUv = document.createElement("h5");
+targetUv.innerHTML = `UV Index: <span class="badge badge-danger" id="uvIndex">Num</span>`;
 overviewBody.append(targetUv);
-
-
 
 // event when search button is clicked
 searchBtn.addEventListener("click", function (e) {
@@ -45,19 +42,23 @@ searchBtn.addEventListener("click", function (e) {
     })
     .then(function (data) {
       console.log(data);
-    //   result for city, temperature, humidity, wind speed, and UV index
+      //   result for city, date, icon, temperature, humidity, wind speed, and UV index
       let cityResult = data.name;
-      console.log(cityResult);
+      let icon = data.weather[0].icon;
+      let iconPng = `http://openweathermap.org/img/wn/${icon}@2x.png`
+      console.log(iconPng)
+      console.log(icon);
       let temperature = data.main.temp;
-      console.log(temperature);
       let humidity = data.main.humidity;
-      console.log(humidity);
       let windSpeed = data.wind.speed;
-      console.log(windSpeed);
 
       //   add overview section
       searchArea.after(overview);
 
-      
+      document.querySelector("#city").textContent = cityResult;
+    //   document.querySelector("#date").textContent = 
+      document.querySelector("#temp").textContent = temperature;
+      document.querySelector("#humid").textContent = humidity;
+      document.querySelector("#speed").textContent = windSpeed;
     });
 });
