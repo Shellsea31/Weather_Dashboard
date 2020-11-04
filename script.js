@@ -45,8 +45,8 @@ searchBtn.addEventListener("click", function (e) {
       //   result for city, date, icon, temperature, humidity, wind speed, and UV index
       let cityResult = data.name;
       let icon = data.weather[0].icon;
-      let iconPng = `http://openweathermap.org/img/wn/${icon}@2x.png`
-      console.log(iconPng)
+      let iconPng = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+      console.log(iconPng);
       console.log(icon);
       let temperature = data.main.temp;
       let humidity = data.main.humidity;
@@ -56,9 +56,11 @@ searchBtn.addEventListener("click", function (e) {
       searchArea.after(overview);
 
       document.querySelector("#city").textContent = cityResult;
-    //   document.querySelector("#date").textContent = 
+      //   document.querySelector("#date").textContent =
+      document.querySelector("#icon").setAttribute("src", iconPng);
       document.querySelector("#temp").textContent = temperature;
       document.querySelector("#humid").textContent = humidity;
       document.querySelector("#speed").textContent = windSpeed;
     });
+
 });
