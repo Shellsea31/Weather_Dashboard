@@ -34,20 +34,15 @@ searchBtn.addEventListener("click", function (e) {
   let city = input.value;
 
   //   request data from weather api corresponding to the city
-  fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`
-  )
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
       //   result for city, date, icon, temperature, humidity, wind speed, and UV index
       let cityResult = data.name;
       let icon = data.weather[0].icon;
       let iconPng = `http://openweathermap.org/img/wn/${icon}@2x.png`;
-      console.log(iconPng);
-      console.log(icon);
       let temperature = data.main.temp;
       let humidity = data.main.humidity;
       let windSpeed = data.wind.speed;
@@ -61,6 +56,20 @@ searchBtn.addEventListener("click", function (e) {
       document.querySelector("#temp").textContent = temperature;
       document.querySelector("#humid").textContent = humidity;
       document.querySelector("#speed").textContent = windSpeed;
+
+      let lat = data.coord.lat;
+      let lon = data.coord.lon;
+
+      fetch(
+          `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=14a2df7296c80f13200f62bb2dd1f835`
+        )
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+        });
     });
+
 
 });
