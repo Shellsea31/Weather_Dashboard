@@ -24,7 +24,7 @@ let targetSpeed = document.createElement("h5");
 targetSpeed.innerHTML = `Wind Speed: <span id="speed"></span> miles/hour`;
 overviewBody.append(targetSpeed);
 let targetUv = document.createElement("h5");
-targetUv.innerHTML = `UV Index: <span class="badge badge-danger" id="uvIndex">Num</span>`;
+targetUv.innerHTML = `UV Index: <span id="uvIndex">Num</span>`;
 overviewBody.append(targetUv);
 
 // the following is all content for the forecast
@@ -34,6 +34,9 @@ forecast.innerHTML = `<h5>5-Day Forecast:</h5>`;
 let row = document.createElement("div");
 row.setAttribute("class", "row");
 forecast.append(row);
+targetUl = document.querySelector(".list-group");
+let li = document.createElement("li");
+li.setAttribute("class", "list-group-item");
 
 // event when search button is clicked
 searchBtn.addEventListener("click", function (e) {
@@ -56,22 +59,38 @@ searchBtn.addEventListener("click", function (e) {
       let temperature = data.main.temp;
       let humidity = data.main.humidity;
       let windSpeed = data.wind.speed;
+      let lat = data.coord.lat;
+      let lon = data.coord.lon;
 
       //   add overview section
       searchArea.after(overview);
 
       document.querySelector("#city").textContent = cityResult;
-      //   document.querySelector("#date").textContent =
+        document.querySelector("#date").textContent = moment().format('l');   
       document.querySelector("#icon").setAttribute("src", iconPng);
       document.querySelector("#temp").textContent = temperature;
       document.querySelector("#humid").textContent = humidity;
       document.querySelector("#speed").textContent = windSpeed;
-
-      let lat = data.coord.lat;
-      let lon = data.coord.lon;
+      let uvIndexEl = document.querySelector("#uvIndex");
 
       fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=14a2df7296c80f13200f62bb2dd1f835`
+        `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=14a2df7296c80f13200f62bb2dd1f835`
+      )
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          uvIndexEl.textContent = data.value;
+
+          if (data.value < 3) {
+            uvIndexEl.setAttribute("class", "badge badge-success");
+          } else if (data.value > 3 && data.value < 6) {
+            uvIndexEl.setAttribute("class", "badge badge-warning");
+          } else uvIndexEl.setAttribute("class", "badge badge-danger");
+        });
+
+      fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`
       )
         .then(function (response) {
           return response.json();
@@ -85,21 +104,25 @@ searchBtn.addEventListener("click", function (e) {
             data.list[39],
           ];
 
+          longDate = forecastData[0].dt;
+
           // create the columns for the 5 day forecast
           for (let i = 0; i < 5; i++) {
+            let forecastIcon = forecastData[i].weather[0].icon;
             let columns = document.createElement("div");
             columns.setAttribute("class", "col");
-            columns.innerHTML = `<div class="card bg-primary text-white"><div class="card-body forecastText"></div></div>`;
+            columns.innerHTML = `<div class="card bg-primary text-white">
+            <div class="card-body forecastText">
+            <h5 id="forecastDate" class="card-title">${moment.unix(forecastData[i].dt).format("MM/DD/YYYY")}</h5>
+            <img src="http://openweathermap.org/img/wn/${forecastIcon}@2x.png"</img>
+            <p>Temperature: ${forecastData[i].main.temp}° F</p>
+            <p>Humidity: ${forecastData[i].main.humidity}</p>
+            </div></div>`;
+
             row.append(columns);
           }
+
           overview.after(forecast);
-          let forecastText = document.querySelectorAll(".forecastText");
-          
-          for (let i = 0; i < forecastText.length; i++) {
-            let forecastText2 = forecastText[i]
-            console.log(forecastText2);
-            
-          }
         });
     });
 });
