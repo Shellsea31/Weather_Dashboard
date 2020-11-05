@@ -27,6 +27,22 @@ let targetUv = document.createElement("h5");
 targetUv.innerHTML = `UV Index: <span class="badge badge-danger" id="uvIndex">Num</span>`;
 overviewBody.append(targetUv);
 
+// the following is all content for the forecast
+let forecast = document.createElement("div");
+forecast.setAttribute("class", "card-body container forecast");
+forecast.innerHTML = `<h5>5-Day Forecast:</h5>`
+let row = document.createElement("div");
+row.setAttribute("class", "row");
+forecast.append(row);
+
+// create the columns for the 5 day forecast
+for (let i = 0; i < 5; i++) {
+  let columns = document.createElement("div");
+  columns.setAttribute("class", "col")
+  columns.innerHTML = `<div class="card bg-primary text-white"><div id="forecastText"class="card-body"></div></div>`
+  row.append(columns);
+}
+
 // event when search button is clicked
 searchBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -61,13 +77,15 @@ searchBtn.addEventListener("click", function (e) {
       let lon = data.coord.lon;
 
       fetch(
-          `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=14a2df7296c80f13200f62bb2dd1f835`
+          `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=14a2df7296c80f13200f62bb2dd1f835`
         )
         .then(function (response) {
           return response.json();
         })
         .then(function (data) {
-          console.log(data);
+          let forecastData = [data.list[7], data.list[15], data.list[23], data.list[31], data.list[39]];
+
+          overview.after(forecast);
         });
     });
 
