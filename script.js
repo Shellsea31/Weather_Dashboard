@@ -30,18 +30,10 @@ overviewBody.append(targetUv);
 // the following is all content for the forecast
 let forecast = document.createElement("div");
 forecast.setAttribute("class", "card-body container forecast");
-forecast.innerHTML = `<h5>5-Day Forecast:</h5>`
+forecast.innerHTML = `<h5>5-Day Forecast:</h5>`;
 let row = document.createElement("div");
 row.setAttribute("class", "row");
 forecast.append(row);
-
-// create the columns for the 5 day forecast
-for (let i = 0; i < 5; i++) {
-  let columns = document.createElement("div");
-  columns.setAttribute("class", "col")
-  columns.innerHTML = `<div class="card bg-primary text-white"><div id="forecastText"class="card-body"></div></div>`
-  row.append(columns);
-}
 
 // event when search button is clicked
 searchBtn.addEventListener("click", function (e) {
@@ -50,7 +42,9 @@ searchBtn.addEventListener("click", function (e) {
   let city = input.value;
 
   //   request data from weather api corresponding to the city
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`)
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`
+  )
     .then(function (response) {
       return response.json();
     })
@@ -77,17 +71,35 @@ searchBtn.addEventListener("click", function (e) {
       let lon = data.coord.lon;
 
       fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=14a2df7296c80f13200f62bb2dd1f835`
-        )
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=14a2df7296c80f13200f62bb2dd1f835`
+      )
         .then(function (response) {
           return response.json();
         })
         .then(function (data) {
-          let forecastData = [data.list[7], data.list[15], data.list[23], data.list[31], data.list[39]];
+          let forecastData = [
+            data.list[7],
+            data.list[15],
+            data.list[23],
+            data.list[31],
+            data.list[39],
+          ];
 
+          // create the columns for the 5 day forecast
+          for (let i = 0; i < 5; i++) {
+            let columns = document.createElement("div");
+            columns.setAttribute("class", "col");
+            columns.innerHTML = `<div class="card bg-primary text-white"><div class="card-body forecastText"></div></div>`;
+            row.append(columns);
+          }
           overview.after(forecast);
+          let forecastText = document.querySelectorAll(".forecastText");
+          
+          for (let i = 0; i < forecastText.length; i++) {
+            let forecastText2 = forecastText[i]
+            console.log(forecastText2);
+            
+          }
         });
     });
-
-
 });
