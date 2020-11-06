@@ -35,8 +35,18 @@ let row = document.createElement("div");
 row.setAttribute("class", "row");
 forecast.append(row);
 targetUl = document.querySelector(".list-group");
-let li = document.createElement("li");
+
+
+function addHistory(str) {
+  let li = document.createElement("li");
 li.setAttribute("class", "list-group-item");
+li.textContent = str;
+li.value = str;
+targetUl.append(li);
+}
+
+// set variable for parsed item from local storage OR empty local storage
+let userHistory = JSON.parse(localStorage.getItem("history")) || [];
 
 // event when search button is clicked
 searchBtn.addEventListener("click", function (e) {
@@ -44,7 +54,28 @@ searchBtn.addEventListener("click", function (e) {
   //   grab the text from the input area
   let city = input.value;
 
-  //   request data from weather api corresponding to the city
+  // if city is not in the userHistory array push to array and append
+  if (userHistory.indexOf(city) === -1) {
+    userHistory.push(city);
+    localStorage.setItem("history", JSON.stringify(userHistory));
+    addHistory(city);
+  }
+
+  searchWeather(city);
+
+});
+
+for (let i = 0; i < userHistory.length; i++) {
+  addHistory(userHistory[i]);
+}
+
+targetUl.addEventListener("click", function(e){
+  e.preventDefault();
+  let historyItem = e.target.textContent;
+  searchWeather(historyItem);
+});
+
+function searchWeather (city) {
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`
   )
@@ -96,6 +127,7 @@ searchBtn.addEventListener("click", function (e) {
           return response.json();
         })
         .then(function (data) {
+          row.innerHTML = "";
           let forecastData = [
             data.list[7],
             data.list[15],
@@ -125,4 +157,4 @@ searchBtn.addEventListener("click", function (e) {
           overview.after(forecast);
         });
     });
-});
+}
