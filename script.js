@@ -120,6 +120,7 @@ function searchUv(lat, lon) {
     .then(function (data) {
       let uvIndexEl = document.querySelector("#uvIndex");
       uvIndexEl.textContent = data.value;
+      console.log(data.value);
 
       if (data.value < 3) {
         uvIndexEl.setAttribute("class", "badge badge-success");
