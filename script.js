@@ -112,7 +112,7 @@ function searchWeather (city) {
 function searchUv(lat, lon) {
   
   fetch(
-    `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=14a2df7296c80f13200f62bb2dd1f835`
+    `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=14a2df7296c80f13200f62bb2dd1f835`
   )
     .then(function (response) {
       return response.json();
