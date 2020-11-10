@@ -86,7 +86,7 @@ function searchWeather (city) {
       //   result for city, date, icon, temperature, humidity, wind speed, and UV index
       let cityResult = data.name;
       let icon = data.weather[0].icon;
-      let iconPng = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+      let iconPng = `https://openweathermap.org/img/wn/${icon}@2x.png`;
       let temperature = data.main.temp;
       let humidity = data.main.humidity;
       let windSpeed = data.wind.speed;
@@ -157,7 +157,7 @@ function searchForecast(city){
         columns.innerHTML = `<div class="card bg-primary text-white">
         <div class="card-body forecastText">
         <h5 id="forecastDate" class="card-title">${moment.unix(forecastData[i].dt).format("MM/DD/YYYY")}</h5>
-        <img src="http://openweathermap.org/img/wn/${forecastIcon}@2x.png"</img>
+        <img src="https://openweathermap.org/img/wn/${forecastIcon}@2x.png"</img>
         <p>Temperature: ${forecastData[i].main.temp}° F</p>
         <p>Humidity: ${forecastData[i].main.humidity}</p>
         </div></div>`;

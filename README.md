@@ -17,7 +17,7 @@ The data from the [OpenWeather API](https://openweathermap.org/api) includes:
 
 ## Demo
 
-
+![_C__Users_shels_Desktop_Homework_06-Homework_index html](https://user-images.githubusercontent.com/70654835/98632193-d6ac6c00-22d3-11eb-9fbd-36600ef0f1db.png)
 
 Search the weather in your city by clicking [here](https://shellsea31.github.io/Weather_Dashboard/)
 
