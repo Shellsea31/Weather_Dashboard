@@ -93,6 +93,8 @@ function searchWeather (city) {
       let lat = data.coord.lat;
       let lon = data.coord.lon;
 
+      searchUv(lat, lon);
+      searchForecast(city);
       //   add overview section
       searchArea.after(overview);
 
@@ -102,59 +104,66 @@ function searchWeather (city) {
       document.querySelector("#temp").textContent = temperature;
       document.querySelector("#humid").textContent = humidity;
       document.querySelector("#speed").textContent = windSpeed;
+      
+
+    });
+}
+
+function searchUv(lat, lon) {
+  
+  fetch(
+    `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=14a2df7296c80f13200f62bb2dd1f835`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
       let uvIndexEl = document.querySelector("#uvIndex");
+      uvIndexEl.textContent = data.value;
 
-      fetch(
-        `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=14a2df7296c80f13200f62bb2dd1f835`
-      )
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          uvIndexEl.textContent = data.value;
+      if (data.value < 3) {
+        uvIndexEl.setAttribute("class", "badge badge-success");
+      } else if (data.value > 3 && data.value < 6) {
+        uvIndexEl.setAttribute("class", "badge badge-warning");
+      } else uvIndexEl.setAttribute("class", "badge badge-danger");
+    });
+}
 
-          if (data.value < 3) {
-            uvIndexEl.setAttribute("class", "badge badge-success");
-          } else if (data.value > 3 && data.value < 6) {
-            uvIndexEl.setAttribute("class", "badge badge-warning");
-          } else uvIndexEl.setAttribute("class", "badge badge-danger");
-        });
+function searchForecast(city){
+  fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      row.innerHTML = "";
+      let forecastData = [
+        data.list[7],
+        data.list[15],
+        data.list[23],
+        data.list[31],
+        data.list[39],
+      ];
 
-      fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=14a2df7296c80f13200f62bb2dd1f835`
-      )
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          row.innerHTML = "";
-          let forecastData = [
-            data.list[7],
-            data.list[15],
-            data.list[23],
-            data.list[31],
-            data.list[39],
-          ];
+      longDate = forecastData[0].dt;
 
-          longDate = forecastData[0].dt;
+      // create the columns for the 5 day forecast
+      for (let i = 0; i < 5; i++) {
+        let forecastIcon = forecastData[i].weather[0].icon;
+        let columns = document.createElement("div");
+        columns.setAttribute("class", "col");
+        columns.innerHTML = `<div class="card bg-primary text-white">
+        <div class="card-body forecastText">
+        <h5 id="forecastDate" class="card-title">${moment.unix(forecastData[i].dt).format("MM/DD/YYYY")}</h5>
+        <img src="http://openweathermap.org/img/wn/${forecastIcon}@2x.png"</img>
+        <p>Temperature: ${forecastData[i].main.temp}° F</p>
+        <p>Humidity: ${forecastData[i].main.humidity}</p>
+        </div></div>`;
 
-          // create the columns for the 5 day forecast
-          for (let i = 0; i < 5; i++) {
-            let forecastIcon = forecastData[i].weather[0].icon;
-            let columns = document.createElement("div");
-            columns.setAttribute("class", "col");
-            columns.innerHTML = `<div class="card bg-primary text-white">
-            <div class="card-body forecastText">
-            <h5 id="forecastDate" class="card-title">${moment.unix(forecastData[i].dt).format("MM/DD/YYYY")}</h5>
-            <img src="http://openweathermap.org/img/wn/${forecastIcon}@2x.png"</img>
-            <p>Temperature: ${forecastData[i].main.temp}° F</p>
-            <p>Humidity: ${forecastData[i].main.humidity}</p>
-            </div></div>`;
+        row.append(columns);
+      }
 
-            row.append(columns);
-          }
-
-          overview.after(forecast);
-        });
+      overview.after(forecast);
     });
 }
