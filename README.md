@@ -21,3 +21,11 @@ The data from the [OpenWeather API](https://openweathermap.org/api) includes:
 
 Search the weather in your city by clicking [here](https://shellsea31.github.io/Weather_Dashboard/)
 
+
+#### Contributors
+
+ **Shelsy Barrera**
+ * Github: Shellsea31
+ * Gitlab: @Shellsea
+ * LinkedIn: Shelsy Barrera
+ * Email: elainesbarrera@gmail.com
