@@ -1,4 +1,5 @@
 # 06 Server-Side APIs: Weather Dashboard
+ <img src="https://img.shields.io/badge/LICENSE-mit-green"/>
 
 ## Description 
 
@@ -16,6 +17,8 @@ The data from the [OpenWeather API](https://openweathermap.org/api) includes:
 * Color varying for favorable, moderate, or severe uv index
 
 ## Demo
+
+![shellsea31 github io_Weather_Dashboard_](https://user-images.githubusercontent.com/70654835/99455801-34951100-28dd-11eb-8b6d-0907de454a56.png)
 
 ![_C__Users_shels_Desktop_Homework_06-Homework_index html](https://user-images.githubusercontent.com/70654835/98632193-d6ac6c00-22d3-11eb-9fbd-36600ef0f1db.png)
 
